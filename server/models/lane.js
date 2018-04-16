@@ -8,4 +8,21 @@ const laneSchema = new Schema({
   id: { type: 'String', required: true, unique: true },
 });
 
+function populateNotes(next) {
+  this.populate('notes');
+  next();
+}
+
+function deleteNotes(next) {
+    const notes = this.notes;
+    notes.forEach(element => {
+      Note.findByIdAndRemove(element._id).exec()
+    });
+    next();
+}
+
+laneSchema.pre('find', populateNotes);
+laneSchema.pre('findOne', populateNotes);
+laneSchema.pre('remove', deleteNotes);
+
 export default mongoose.model('Lane', laneSchema);
