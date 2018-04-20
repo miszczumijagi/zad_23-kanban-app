@@ -20,7 +20,7 @@ export function Header(props, context) {
       </div>
       <div className={styles.content}>
         <h1 className={styles['site-title']}>
-          <Link to="/" ><FormattedMessage id="siteTitle" /></Link>
+          Kanban App
         </h1>
         {
           context.router.isActive('/', true)

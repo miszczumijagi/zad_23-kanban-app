@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import NoteContainer from '../Note/NoteContainer';
+import NotesContainer from '../Note/NoteContainer';
 
 import styles from './Lane.css';
 
