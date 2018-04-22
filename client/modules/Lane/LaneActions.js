@@ -11,6 +11,9 @@ export const UPDATE_LANE = 'UPDATE_LANE';
 export const DELETE_LANE = 'DELETE_LANE';
 export const EDIT_LANE = 'EDIT_LANE';
 export const CREATE_LANES = 'CREATE_LANES';
+export const MOVE_BETWEEN_LANES = 'MOVE_BETWEEN_LANES';
+export const REMOVE_FROM_LANE = 'REMOVE_FROM_LANE';
+export const PUSH_TO_LANE = 'PUSH_TO_LANE';
 
 
 // Export Actions
@@ -94,3 +97,58 @@ export function createLanes(lanesData) {
   };
 }
 
+export function moveBetweenLanes(targetLaneId, noteId, sourceLaneId) {
+  return {
+    type: MOVE_BETWEEN_LANES,
+    targetLaneId,
+    noteId,
+    sourceLaneId,
+  };
+}
+
+export function removeFromLane(sourceLaneId, noteId) {
+  return {
+    type: REMOVE_FROM_LANE,
+    sourceLaneId,
+    noteId,
+  }
+}
+
+export function pushToLane(targetLaneId, noteId) {
+  return {
+    type: PUSH_TO_LANE,
+    targetLaneId,
+    noteId,
+  }
+}
+
+export function changeLanesRequest(sourceLaneId, targetLaneId, noteId, newNotes) {
+  return (dispatch) => {
+    return callApi(`lanes`)
+
+      .then((res) => {
+        const newSourceLane = res.lanes.find(lane => lane.id === sourceLaneId);
+        const newSourceNotes= newSourceLane.notes.filter(note => note.id !== noteId).map(note => note._id)
+        callApi('lanes','put', {id: sourceLaneId, notes: newSourceNotes})
+      })
+      
+      .then((res) => {
+        callApi('lanes','put', {id: targetLaneId, notes: newNotes})
+      })
+
+      .then(() => {
+        dispatch(removeFromLane(
+          sourceLaneId,
+          noteId,
+        ));
+        dispatch(pushToLane(
+          targetLaneId,
+          noteId,
+        ));
+      }
+    )
+    .catch(err => {
+      console.log(err);
+    })
+  }
+}

@@ -1,0 +1,4 @@
+.Lanes {
+	display: flex;
+	flex-direction: row;
+}

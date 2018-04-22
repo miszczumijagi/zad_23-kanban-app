@@ -1,11 +1,18 @@
 /* Lane styles */
 
 .Lane {
+	padding: 10px;
+  	background-color: #29b54c;
+	width: 290px;
+	min-height: 300px;
+	border: 1px black solid;
+	margin: 10px;
+
 
 }
 
 .LaneHeader {
-
+	font-weight: bold;
 }
 
 .LaneAddNote {
@@ -16,3 +23,14 @@
 
 }
 
+button {
+  
+  margin-bottom: 4px;
+  margin-left: 2px;
+  color: #FFF;
+  background: #03A9F4;
+  padding: 3px;
+  text-decoration: none;
+  border-radius: 1000px;
+  float: right;
+}

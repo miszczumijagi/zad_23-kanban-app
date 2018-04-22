@@ -1,5 +1,14 @@
 /* Note styles */
 
 .Note {
-	
+  padding: 10px;
+  background-color: #06e55c;
+  width: 250px;
+  min-height: 100px;
+  border: 1px black solid;
+  margin: 2px;
+  list-style-type: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }

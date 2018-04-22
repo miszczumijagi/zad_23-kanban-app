@@ -1,6 +1,10 @@
 .container {
-  max-width: 980px;
   width: 100%;
   padding: 15px;
   margin: 0 auto;
+  background-color: #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  flex-direction: row;
 }

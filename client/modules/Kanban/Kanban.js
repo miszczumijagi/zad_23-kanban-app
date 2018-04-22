@@ -2,37 +2,64 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Lanes from '../Lane/Lanes';
-
 import styles from './Kanban.css';
-import {createLane, createLaneRequest, fetchLanes } from '../Lane/LaneActions';
+import { fetchLanes } from '../Lane/LaneActions';
+import { createLaneRequest } from '../Lane/LaneActions';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { compose } from 'redux';
 
+class Kanban extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-const Kanban = (props) => (
-  <div>
-    <button
-      className={styles.AddLane}
-      onClick={() => props.createLane({
-        name: 'New lane',
-      })}
-    >Add lane</button>
-    <Lanes lanes={props.lanes} />
-  </div>
-);
+  componentDidMount() {
+    this.props.fetchLanes();
+  }
 
-Kanban.need = [() => { return fetchLanes(); }];  
+  render() {
+    return (
+      <div className={styles.KanbanContainer}>
+        <button
+          className={styles.AddLane}
+          onClick={() => this.props.createLane({
+            name: 'New lane',
+          })}
+        >Add lane</button>
+        <div className={styles.Container}>
+        <Lanes lanes={this.props.lanes} />
+        </div>
+      </div>
+    )
+  }
+}
+
+Kanban.need = [() => { return fetchLanes(); }];
 
 Kanban.propTypes = {
   lanes: PropTypes.array,
   createLane: PropTypes.func,
+  dispatch: PropTypes.func
 };
 
-const mapStateToProps = state => ({
-  lanes: Object.values(state.lanes)
+const mapStateToProps = (state) => ({
+  lanes: Object.values(state.lanes),
 });
 
 const mapDispatchToProps = {
-  createLane,
+  createLane: createLaneRequest,
+  fetchLanes: fetchLanes,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Kanban);
+Kanban.propTypes = {
+  lanes: PropTypes.array,
+  createLane: PropTypes.func,
+  dispatch: PropTypes.func,
+};
 
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  DragDropContext(HTML5Backend)
+)(Kanban);
